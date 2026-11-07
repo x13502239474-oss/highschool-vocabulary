@@ -355,6 +355,10 @@ html{-webkit-tap-highlight-color:rgba(141,47,36,.14)}
 .detail b{font:9px var(--cinzel);letter-spacing:.18em;color:var(--brass-d);text-transform:uppercase;margin-bottom:5px}
 .detail-head b{color:var(--brass-d)}
 #memoryWrap b{color:var(--ink-2)}
+/* 真题例句：暖色左缘 + 标签，与普通例句区分，体现真题权威感 */
+.exam-detail{border-left:1px solid var(--crimson);background:linear-gradient(90deg,rgba(156,52,42,.055),transparent 62%)}
+.exam-detail .detail-head b{color:var(--crimson)}
+#examWrap{color:var(--ink-2)}
 .speak{color:var(--ink-3);border-radius:0;padding:8px;border:1px solid transparent}
 .speak:hover:not(:disabled){color:var(--crimson);background:var(--parch-2)}
 .speak.speaking{color:var(--crimson);border-color:var(--crimson)}

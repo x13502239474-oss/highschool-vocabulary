@@ -256,6 +256,9 @@ button.primary:active:not(:disabled){background:var(--green);border-color:var(--
 .detail-head b{margin-bottom:0}
 #memoryWrap b{color:var(--plum)}
 #exampleWrap b{color:var(--accent)}
+/* 真题例句：加暖色左缘与标签色，与普通例句区分，体现真题权威感 */
+#examWrap b{color:var(--crimson,var(--accent))}
+.exam-detail{border-left:1px solid var(--crimson,var(--accent))!important;background:linear-gradient(90deg,rgba(141,47,36,.05),transparent 60%)}
 .actions{display:flex;gap:4px;flex-wrap:wrap;margin-top:34px;align-items:center}
 
 /* ---- 设置条 ---- */
@@ -736,7 +739,7 @@ body.kb .word{font-size:clamp(34px,9vw,48px)}
   <div class="eyebrow" id="counter">准备开始</div>
   <div class="word-line"><div class="word" id="word">Welcome!</div><button class="speak" id="speakTop" title="朗读单词（快捷键 S）" aria-label="朗读"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8.5a4 4 0 0 1 0 7"/><path d="M19.5 6a7.5 7.5 0 0 1 0 12"/></svg></button></div>
   <div class="phonetic" id="phonetic">点击“显示释义”开始学习</div>
-  <div id="answer" class="hidden"><div class="definition" id="definition"></div><div class="detail" id="memoryWrap"><b>记忆提示</b><span id="memory"></span></div><div class="detail" id="exampleWrap"><div class="detail-head"><b>例句</b><button class="speak mini" id="exSpeak" title="朗读例句（只读英文部分）" aria-label="朗读例句"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8.5a4 4 0 0 1 0 7"/><path d="M19.5 6a7.5 7.5 0 0 1 0 12"/></svg></button></div><span id="example"></span></div></div>
+  <div id="answer" class="hidden"><div class="definition" id="definition"></div><div class="detail" id="memoryWrap"><b>记忆提示</b><span id="memory"></span></div><div class="detail" id="exampleWrap"><div class="detail-head"><b>例句</b><button class="speak mini" id="exSpeak" title="朗读例句（只读英文部分）" aria-label="朗读例句"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8.5a4 4 0 0 1 0 7"/><path d="M19.5 6a7.5 7.5 0 0 1 0 12"/></svg></button></div><span id="example"></span></div><div class="detail exam-detail" id="examWrap"><div class="detail-head"><b>真题例句</b><button class="speak mini" id="examSpeak" title="朗读真题例句（只读英文部分）" aria-label="朗读真题例句"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8.5a4 4 0 0 1 0 7"/><path d="M19.5 6a7.5 7.5 0 0 1 0 12"/></svg></button></div><span id="exam"></span></div></div>
   <div id="wdictBox" class="hidden">
    <div class="in-wrap"><input id="wdictInput" class="d-input" type="text" lang="en" placeholder="看中文写英文，按 Enter 判分；判完再按 Enter 进入下一个" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><button type="button" class="in-clear" id="wdictClear" tabindex="-1" aria-label="清空输入内容" title="清空全部"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
    <div class="feedback" id="wdictResult"></div>
@@ -1923,6 +1926,11 @@ function showWord(i){
   /* 例句只有中文（或为空）时，喇叭按钮没意义，直接藏掉 */
   { const eb=$("exSpeak");
     if(eb){ eb.classList.toggle("hidden", !enPart(w.example)); eb.classList.remove("speaking"); } }
+  /* 真题例句：有 exam 字段才显示，否则整块隐藏 */
+  { const exEl=$("exam");
+    if(exEl){ exEl.textContent=w.exam||""; }
+    const eb=$("examSpeak");
+    if(eb){ eb.classList.toggle("hidden", !enPart(w.exam)); eb.classList.remove("speaking"); } }
   $("reveal").textContent="显示释义";
   $("master").textContent=mastered.has(w.word)?"已掌握":"标记掌握";
   if(wDict){
@@ -1933,11 +1941,13 @@ function showWord(i){
     $("answer").classList.remove("hidden");
     $("memoryWrap").classList.add("hidden");
     $("exampleWrap").classList.add("hidden");
+    $("examWrap").classList.add("hidden");
   }else{
     $("word").textContent=w.word;
     $("word").classList.remove("mask");
     $("memoryWrap").classList.toggle("hidden",!w.memory);
     $("exampleWrap").classList.toggle("hidden",!w.example);
+    $("examWrap").classList.toggle("hidden",!w.exam);
     $("answer").classList.add("hidden");
   }
   applyWDictUI();
@@ -1967,6 +1977,11 @@ $("exSpeak").onclick=()=>{
   const w=activeWord(); if(!w) return;
   const ex=enPart(w.example);
   if(ex) speak(ex,$("exSpeak"));
+};
+$("examSpeak").onclick=()=>{
+  const w=activeWord(); if(!w) return;
+  const ex=enPart(w.exam);
+  if(ex) speak(ex,$("examSpeak"));
 };
 $("next").onclick=()=>showWord(stepWord(1));
 $("prev").onclick=()=>showWord(stepWord(-1));
@@ -2826,6 +2841,7 @@ function wdictRevealAnswer(){
   $("word").classList.remove("mask");
   $("memoryWrap").classList.toggle("hidden",!w.memory);
   $("exampleWrap").classList.toggle("hidden",!w.example);
+  $("examWrap").classList.toggle("hidden",!w.exam);
   const spk=$("speakTop");
   if(spk) spk.disabled=false;                 // 答完可以听发音
 }
