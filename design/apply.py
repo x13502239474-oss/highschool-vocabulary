@@ -104,15 +104,15 @@ NAV = '''<nav class="tabs" aria-label="功能导航">
 
 # ---------- 4. 扉页 ----------
 BLADE = '''<svg class="blade-svg" viewBox="0 0 600 60" role="img" aria-label="铁剑锻造进度">
- <polygon points="4,30 12,22 20,30 12,38" fill="#6b5540"/>
- <rect x="18" y="10" width="9" height="40" fill="#8a6a3a"/>
+ <polygon points="4,30 12,22 20,30 12,38" fill="#5f6873"/>
+ <rect x="18" y="10" width="9" height="40" fill="#8a7646"/>
  <polygon points="27,19 560,20 560,40 27,41" fill="#4d5658"/>
  <clipPath id="bladeClip"><polygon points="27,19 560,20 560,40 27,41"/></clipPath>
  <rect id="bladeLit" x="27" y="18" width="0" height="24" fill="#c9d1cf" clip-path="url(#bladeClip)"/>
  <polygon points="560,20 596,30 560,40" fill="#4d5658"/>
  <path d="M28 30 L560 30" stroke="#8d9593" stroke-width=".8" fill="none" opacity=".55"/>
  <path d="M300 22 L316 25 M360 35 L378 37 M420 23 L438 26 M480 34 L498 36" stroke="#8d9593" stroke-width=".7" fill="none"/>
- <circle cx="12" cy="30" r="2.5" fill="#dcc079"/>
+ <circle cx="12" cy="30" r="2.5" fill="#cdbf8e"/>
 </svg>'''
 MG_BLADE = BLADE.replace('id="bladeClip"', 'id="mgBladeClip"') \
                 .replace('url(#bladeClip)', 'url(#mgBladeClip)') \
@@ -195,7 +195,7 @@ FRAME_OPEN = '''
  <button class="menu-btn" id="menuBtn" aria-label="打开目次">☰</button>
  <div class="brand">
   <svg class="brand-sigil" viewBox="0 0 34 38" aria-hidden="true">
-   <path d="M1 1 H33 V23 L17 37 L1 23 Z" fill="#c4b18c" stroke="#866729" stroke-width="2"/>
+   <path d="M1 1 H33 V23 L17 37 L1 23 Z" fill="#c9ba8b" stroke="#8a7646" stroke-width="2"/>
    <path d="M15 7 H19 V26 H15 Z M8 14 H26 V18 H8 Z" fill="#8d2f24"/>
   </svg>
   <div><b class="brand-cn">北境词林</b><small class="brand-la">The Northern Lexicon</small></div>
@@ -257,7 +257,7 @@ FRAME_CLOSE = '''
 # ---------- 6. 组装 ----------
 FAVICON = ('<link rel="icon" href="data:image/svg+xml,'
            "%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E"
-           "%3Cpath%20d='M4%204%20h56%20v34%20L32%2060%204%2038%20Z'%20fill='%23c4b18c'%20stroke='%23866729'%20stroke-width='3'/%3E"
+           "%3Cpath%20d='M4%204%20h56%20v34%20L32%2060%204%2038%20Z'%20fill='%23c9ba8b'%20stroke='%238a7646'%20stroke-width='3'/%3E"
            "%3Cpath%20d='M29%2012%20h6%20v30%20h-6%20Z%20M17%2024%20h30%20v6%20H17%20Z'%20fill='%238d2f24'/%3E%3C/svg%3E\">\n")
 head_part = head_part.replace('<title>', FAVICON + '<title>', 1)
 tail_part = tail_part.replace('</body>', '<script>\n' + js + '\n</script>\n</body>', 1)
