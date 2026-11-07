@@ -282,23 +282,31 @@ html{-webkit-tap-highlight-color:rgba(141,47,36,.14)}
 .site.lit::before{background:var(--brass-l)}
 .site-tip{min-height:18px;margin-top:10px;font-size:12px;color:var(--ink-2)}
 
-/* 今日三枚符文：手抄本牌 */
-.runes-block{margin-top:40px}
-.rune-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.rune{
-  border:1px solid var(--stone-d);background:var(--parch-3);padding:18px 20px 20px;
-  cursor:pointer;position:relative;transition:transform .2s var(--ease),border-color .2s;
-  box-shadow:2px 2px 0 var(--parch-4);
+/* 词林三境：基础 / 进阶 / 核心三大板块 */
+.tiers-block{margin-top:40px}
+.tier-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.tier{
+  border:1px solid var(--stone-d);background:var(--parch-3);padding:20px 22px 18px;
+  cursor:pointer;position:relative;transition:transform .2s var(--ease),border-color .2s,box-shadow .2s;
+  box-shadow:2px 2px 0 var(--parch-4);display:flex;flex-direction:column;
 }
-.rune:hover{transform:translateY(-3px);border-color:var(--crimson)}
-.rune::before,.rune::after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:var(--brass-d);top:7px}
-.rune::before{left:7px}.rune::after{right:7px}
-.rune .no{font:9px var(--cinzel);letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
-.rune .w{font:600 clamp(24px,2.8vw,34px)/1.15 var(--cormorant);letter-spacing:-.01em;margin:9px 0 2px;overflow-wrap:anywhere;color:var(--ink)}
-.rune:hover .w{color:var(--crimson)}
-.rune .ph{font:italic 13px var(--cormorant);color:var(--brass-d)}
-.rune .df{font:12px/1.7 var(--sans);color:var(--ink-2);margin-top:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.rune .go{font:9px var(--cinzel);letter-spacing:.16em;color:var(--crimson);margin-top:13px;text-transform:uppercase}
+.tier:hover{transform:translateY(-3px);border-color:var(--crimson);box-shadow:3px 4px 0 var(--parch-4)}
+.tier .t-no{
+  position:absolute;top:14px;right:16px;font:600 30px/1 var(--cinzel);color:var(--stone-d);
+  letter-spacing:.02em;
+}
+.tier:hover .t-no{color:var(--crimson-l)}
+.tier .t-cn{font:600 21px/1.25 var(--serif,var(--cormorant));color:var(--ink);letter-spacing:.01em}
+.tier .t-la{font:10px var(--cinzel);letter-spacing:.18em;color:var(--brass-d);text-transform:uppercase;margin-top:4px}
+.tier .t-note{font:12.5px/1.6 var(--sans);color:var(--ink-2);margin-top:12px}
+.tier .t-count{margin-top:16px;display:flex;align-items:baseline;gap:5px}
+.tier .t-count b{font:600 32px/1 var(--cormorant);color:var(--crimson)}
+.tier .t-count span{font:12px var(--sans);color:var(--ink-3)}
+.tier .t-bar{margin-top:10px;height:5px;background:var(--parch-4);overflow:hidden}
+.tier .t-bar i{display:block;height:100%;background:var(--crimson);width:0;transition:width .4s var(--ease)}
+.tier .t-meta{margin-top:9px;display:flex;justify-content:space-between;font:11px var(--sans);color:var(--ink-3)}
+.tier .t-go{margin-top:16px;font:10px var(--cinzel);letter-spacing:.16em;color:var(--crimson);text-transform:uppercase;border-top:1px solid var(--stone-d);padding-top:12px}
+.tier-tip{margin-top:10px;font-size:12px;color:var(--ink-2)}
 
 /* 开卷入口 + 版本记 */
 .front-entries{display:flex;gap:0;flex-wrap:wrap;margin-top:38px;border-top:2px solid var(--stone-d)}
@@ -542,9 +550,8 @@ button.primary:active:not(:disabled){background:var(--crimson);color:#fff}
   .hero-kicker{font-size:8px;letter-spacing:.2em}
   .front-grid{grid-template-columns:1fr;gap:26px;margin-top:26px}
   .site-grid{grid-template-columns:repeat(10,minmax(0,1fr))}
-  .rune-row{grid-template-columns:1fr}
-  .rune{padding:14px 16px}
-  .rune .df{-webkit-line-clamp:1}
+  .tier-row{grid-template-columns:1fr}
+  .tier{padding:16px 18px}
   .entr{flex:1 1 50%;min-width:0;padding:13px 10px 14px 0}
   .entr .t{font-size:15px}
   .word{font-size:clamp(40px,11vw,58px)}

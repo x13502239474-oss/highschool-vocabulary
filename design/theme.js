@@ -119,26 +119,54 @@
     });
   }
 
-  /* ---------------- 今日三枚符文 ---------------- */
-  function renderRunes() {
-    var box=$('runeRow'); if(!box||!WORDS.length) return;
-    var m=masteredSet(), seed=todaySeed();
-    var pool = WORDS.filter(function(w){ return w.hot===1 && !m.has(w.word) && w.definition; });
-    if(pool.length<3) pool = WORDS.filter(function(w){ return !m.has(w.word) && w.definition; });
-    if(pool.length<3) pool = WORDS.filter(function(w){ return w.definition; });
-    var picks=[0,1,2].map(function(k){ return pool[Math.abs(seed*7+k*911+137)%pool.length]; });
-    box.innerHTML = picks.map(function(w,i){
-      return '<div class="rune" data-word="'+esc(w.word)+'"><div class="no">SORT 0'+(i+1)+' · '+esc(w.list||'')+'</div>'+
-        '<div class="w">'+esc(w.word)+'</div><div class="ph">'+esc(w.phonetic||'')+'</div>'+
-        '<div class="df">'+esc(w.definition||'')+'</div><div class="go">拾起这枚符文 →</div></div>';
+  /* ---------------- 词林三境：基础 / 进阶 / 核心三大板块 ---------------- */
+  /* tier 归并到三档：简单单词→基础；认知词+高频词→进阶；核心词→核心 */
+  function tierGroup(tier){
+    if(tier==='简单单词') return 'base';
+    if(tier==='核心词') return 'core';
+    return 'advance';   // 认知词 + 高频词
+  }
+  function renderTiers() {
+    var box=$('tierRow'); if(!box||!WORDS.length) return;
+    var m=masteredSet();
+    var groups={
+      base:    {cn:'磐石 · 基础词', la:'Petra · Fundamenta', note:'初中已学，打牢地基', total:0, done:0},
+      advance: {cn:'铸刃 · 进阶词', la:'Ferrum · Profectus', note:'认知拓展，磨利锋芒', total:0, done:0},
+      core:    {cn:'铭心 · 核心词', la:'Anima · Nucleus',   note:'高考主干，务必刻骨', total:0, done:0}
+    };
+    WORDS.forEach(function(w){
+      var g=groups[tierGroup(w.tier)]; if(!g) return;
+      g.total++; if(m.has(w.word)) g.done++;
+    });
+    var order=['base','advance','core'];
+    box.innerHTML = order.map(function(key){
+      var g=groups[key], r=g.total?Math.round(g.done/g.total*100):0;
+      return '<div class="tier" data-tier="'+key+'">'+
+        '<div class="t-no">'+ (key==='base'?'I':key==='advance'?'II':'III') +'</div>'+
+        '<div class="t-cn">'+esc(g.cn)+'</div>'+
+        '<div class="t-la">'+esc(g.la)+'</div>'+
+        '<div class="t-note">'+esc(g.note)+'</div>'+
+        '<div class="t-count"><b>'+g.total.toLocaleString('en-US')+'</b><span>词</span></div>'+
+        '<div class="t-bar"><i style="width:'+r+'%"></i></div>'+
+        '<div class="t-meta"><span>已掌握 '+g.done.toLocaleString('en-US')+'</span><span>'+r+'%</span></div>'+
+        '<div class="t-go">进入此境 →</div>'+
+      '</div>';
     }).join('');
     Array.prototype.forEach.call(box.children, function(el){
-      el.addEventListener('click', function(){
-        var name=el.dataset.word, w=null;
-        for(var i=0;i<WORDS.length;i++) if(WORDS[i].word===name){ w=WORDS[i]; break; }
-        if(w) goWord(w);
-      });
+      el.addEventListener('click', function(){ enterTier(el.dataset.tier); });
     });
+  }
+  function enterTier(key){
+    var scope=$('wordScope');
+    if(scope){
+      var map={base:'tier-base', advance:'tier-advance', core:'tier-core'};
+      scope.value=map[key]||'all';
+      try{ STORE.setItem('vocab-scope', scope.value); }catch(e){}
+    }
+    // 跳到该档第一个词；之后「下一个/上一个」会因 wPred 读 scope 而在本境之内翻词
+    var first=null;
+    for(var i=0;i<WORDS.length;i++){ if(tierGroup(WORDS[i].tier)===key){ first=WORDS[i]; break; } }
+    if(first) goWord(first); else go('study');
   }
 
   /* ---------------- 页边批注（真实短句） ---------------- */
@@ -197,7 +225,7 @@
 
   function refreshAll() {
     var f = renderForge();
-    renderSites(f); renderRunes(); renderMarginalia(); renderColophon(); renderSpecimen(); syncHeader();
+    renderSites(f); renderTiers(); renderMarginalia(); renderColophon(); renderSpecimen(); syncHeader();
   }
 
   /* ---------------- 卷首场景：同一世界的时间轮换 ---------------- */

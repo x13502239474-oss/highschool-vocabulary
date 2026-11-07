@@ -718,7 +718,7 @@ body.kb .word{font-size:clamp(34px,9vw,48px)}
      <span class="seg" id="wModeSeg"><button data-wmode="seq" class="on">按顺序</button><button data-wmode="random">随机</button></span>
      <span class="lbl">呈现</span>
      <span class="seg" id="wDictSeg"><button data-wdict="0" class="on">学习卡片</button><button data-wdict="1">默写</button></span>
-     <label>范围<select id="wordScope"><option value="all" selected>全部单词</option><option value="unmastered">只看未掌握</option><option value="review">只看待复习</option></select></label>
+     <label>范围<select id="wordScope"><option value="all" selected>全部单词</option><option value="unmastered">只看未掌握</option><option value="review">只看待复习</option><option value="tier-base">磐石 · 基础词</option><option value="tier-advance">铸刃 · 进阶词</option><option value="tier-core">铭心 · 核心词</option></select></label>
      <button id="restart">从头开始</button>
      <label><input type="checkbox" id="okFx" checked> 答题音效</label>
      <label><input type="checkbox" id="cfx" checked> 彩带礼花</label>
@@ -1862,6 +1862,9 @@ function wPred(){
   const s=$("wordScope").value;
   if(s==="unmastered") return w=>!mastered.has(w.word);
   if(s==="review") return w=>review.has(w.word);
+  if(s==="tier-base") return w=>(w.tier==="简单单词");
+  if(s==="tier-core") return w=>(w.tier==="核心词");
+  if(s==="tier-advance") return w=>(w.tier==="认知词"||w.tier==="高频词");
   return ()=>true;
 }
 /* ==================== 跳到单词 / 最近学过 ==================== */

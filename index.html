@@ -959,23 +959,31 @@ html{-webkit-tap-highlight-color:rgba(141,47,36,.14)}
 .site.lit::before{background:var(--brass-l)}
 .site-tip{min-height:18px;margin-top:10px;font-size:12px;color:var(--ink-2)}
 
-/* 今日三枚符文：手抄本牌 */
-.runes-block{margin-top:40px}
-.rune-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.rune{
-  border:1px solid var(--stone-d);background:var(--parch-3);padding:18px 20px 20px;
-  cursor:pointer;position:relative;transition:transform .2s var(--ease),border-color .2s;
-  box-shadow:2px 2px 0 var(--parch-4);
+/* 词林三境：基础 / 进阶 / 核心三大板块 */
+.tiers-block{margin-top:40px}
+.tier-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.tier{
+  border:1px solid var(--stone-d);background:var(--parch-3);padding:20px 22px 18px;
+  cursor:pointer;position:relative;transition:transform .2s var(--ease),border-color .2s,box-shadow .2s;
+  box-shadow:2px 2px 0 var(--parch-4);display:flex;flex-direction:column;
 }
-.rune:hover{transform:translateY(-3px);border-color:var(--crimson)}
-.rune::before,.rune::after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:var(--brass-d);top:7px}
-.rune::before{left:7px}.rune::after{right:7px}
-.rune .no{font:9px var(--cinzel);letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
-.rune .w{font:600 clamp(24px,2.8vw,34px)/1.15 var(--cormorant);letter-spacing:-.01em;margin:9px 0 2px;overflow-wrap:anywhere;color:var(--ink)}
-.rune:hover .w{color:var(--crimson)}
-.rune .ph{font:italic 13px var(--cormorant);color:var(--brass-d)}
-.rune .df{font:12px/1.7 var(--sans);color:var(--ink-2);margin-top:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.rune .go{font:9px var(--cinzel);letter-spacing:.16em;color:var(--crimson);margin-top:13px;text-transform:uppercase}
+.tier:hover{transform:translateY(-3px);border-color:var(--crimson);box-shadow:3px 4px 0 var(--parch-4)}
+.tier .t-no{
+  position:absolute;top:14px;right:16px;font:600 30px/1 var(--cinzel);color:var(--stone-d);
+  letter-spacing:.02em;
+}
+.tier:hover .t-no{color:var(--crimson-l)}
+.tier .t-cn{font:600 21px/1.25 var(--serif,var(--cormorant));color:var(--ink);letter-spacing:.01em}
+.tier .t-la{font:10px var(--cinzel);letter-spacing:.18em;color:var(--brass-d);text-transform:uppercase;margin-top:4px}
+.tier .t-note{font:12.5px/1.6 var(--sans);color:var(--ink-2);margin-top:12px}
+.tier .t-count{margin-top:16px;display:flex;align-items:baseline;gap:5px}
+.tier .t-count b{font:600 32px/1 var(--cormorant);color:var(--crimson)}
+.tier .t-count span{font:12px var(--sans);color:var(--ink-3)}
+.tier .t-bar{margin-top:10px;height:5px;background:var(--parch-4);overflow:hidden}
+.tier .t-bar i{display:block;height:100%;background:var(--crimson);width:0;transition:width .4s var(--ease)}
+.tier .t-meta{margin-top:9px;display:flex;justify-content:space-between;font:11px var(--sans);color:var(--ink-3)}
+.tier .t-go{margin-top:16px;font:10px var(--cinzel);letter-spacing:.16em;color:var(--crimson);text-transform:uppercase;border-top:1px solid var(--stone-d);padding-top:12px}
+.tier-tip{margin-top:10px;font-size:12px;color:var(--ink-2)}
 
 /* 开卷入口 + 版本记 */
 .front-entries{display:flex;gap:0;flex-wrap:wrap;margin-top:38px;border-top:2px solid var(--stone-d)}
@@ -1219,9 +1227,8 @@ button.primary:active:not(:disabled){background:var(--crimson);color:#fff}
   .hero-kicker{font-size:8px;letter-spacing:.2em}
   .front-grid{grid-template-columns:1fr;gap:26px;margin-top:26px}
   .site-grid{grid-template-columns:repeat(10,minmax(0,1fr))}
-  .rune-row{grid-template-columns:1fr}
-  .rune{padding:14px 16px}
-  .rune .df{-webkit-line-clamp:1}
+  .tier-row{grid-template-columns:1fr}
+  .tier{padding:16px 18px}
   .entr{flex:1 1 50%;min-width:0;padding:13px 10px 14px 0}
   .entr .t{font-size:15px}
   .word{font-size:clamp(40px,11vw,58px)}
@@ -1374,15 +1381,16 @@ button.primary:active:not(:disabled){background:var(--crimson);color:#fff}
   </div>
  </div>
 
+ <div class="tiers-block">
+  <div class="panel-title"><h2>词林三境</h2><span>Tres ordines · 三分总词库</span></div>
+  <div class="tier-row" id="tierRow"></div>
+  <div class="tier-tip" id="tierTip">全库 3,559 词分作三境：磐石打底，铸刃进阶，铭心收束核心；点任意一境，进入该层词条。</div>
+ </div>
+
  <div class="sites-block">
   <div class="panel-title"><h2>四十处遗迹</h2><span>40 word lists</span><span id="casePct">—</span></div>
   <div class="site-grid" id="siteGrid"></div>
   <div class="site-tip" id="siteTip">每一格是一处遗迹，对应一个 Word List；着墨越深，这一处的词记得越牢。</div>
- </div>
-
- <div class="runes-block">
-  <div class="panel-title"><h2>今日三枚符文</h2><span>Three sorts for today</span></div>
-  <div class="rune-row" id="runeRow"></div>
  </div>
 
  <div class="front-entries">
@@ -1419,7 +1427,7 @@ button.primary:active:not(:disabled){background:var(--crimson);color:#fff}
      <span class="seg" id="wModeSeg"><button data-wmode="seq" class="on">按顺序</button><button data-wmode="random">随机</button></span>
      <span class="lbl">呈现</span>
      <span class="seg" id="wDictSeg"><button data-wdict="0" class="on">学习卡片</button><button data-wdict="1">默写</button></span>
-     <label>范围<select id="wordScope"><option value="all" selected>全部单词</option><option value="unmastered">只看未掌握</option><option value="review">只看待复习</option></select></label>
+     <label>范围<select id="wordScope"><option value="all" selected>全部单词</option><option value="unmastered">只看未掌握</option><option value="review">只看待复习</option><option value="tier-base">磐石 · 基础词</option><option value="tier-advance">铸刃 · 进阶词</option><option value="tier-core">铭心 · 核心词</option></select></label>
      <button id="restart">从头开始</button>
      <label><input type="checkbox" id="okFx" checked> 答题音效</label>
      <label><input type="checkbox" id="cfx" checked> 彩带礼花</label>
@@ -5221,26 +5229,54 @@ Promise.resolve(
     });
   }
 
-  /* ---------------- 今日三枚符文 ---------------- */
-  function renderRunes() {
-    var box=$('runeRow'); if(!box||!WORDS.length) return;
-    var m=masteredSet(), seed=todaySeed();
-    var pool = WORDS.filter(function(w){ return w.hot===1 && !m.has(w.word) && w.definition; });
-    if(pool.length<3) pool = WORDS.filter(function(w){ return !m.has(w.word) && w.definition; });
-    if(pool.length<3) pool = WORDS.filter(function(w){ return w.definition; });
-    var picks=[0,1,2].map(function(k){ return pool[Math.abs(seed*7+k*911+137)%pool.length]; });
-    box.innerHTML = picks.map(function(w,i){
-      return '<div class="rune" data-word="'+esc(w.word)+'"><div class="no">SORT 0'+(i+1)+' · '+esc(w.list||'')+'</div>'+
-        '<div class="w">'+esc(w.word)+'</div><div class="ph">'+esc(w.phonetic||'')+'</div>'+
-        '<div class="df">'+esc(w.definition||'')+'</div><div class="go">拾起这枚符文 →</div></div>';
+  /* ---------------- 词林三境：基础 / 进阶 / 核心三大板块 ---------------- */
+  /* tier 归并到三档：简单单词→基础；认知词+高频词→进阶；核心词→核心 */
+  function tierGroup(tier){
+    if(tier==='简单单词') return 'base';
+    if(tier==='核心词') return 'core';
+    return 'advance';   // 认知词 + 高频词
+  }
+  function renderTiers() {
+    var box=$('tierRow'); if(!box||!WORDS.length) return;
+    var m=masteredSet();
+    var groups={
+      base:    {cn:'磐石 · 基础词', la:'Petra · Fundamenta', note:'初中已学，打牢地基', total:0, done:0},
+      advance: {cn:'铸刃 · 进阶词', la:'Ferrum · Profectus', note:'认知拓展，磨利锋芒', total:0, done:0},
+      core:    {cn:'铭心 · 核心词', la:'Anima · Nucleus',   note:'高考主干，务必刻骨', total:0, done:0}
+    };
+    WORDS.forEach(function(w){
+      var g=groups[tierGroup(w.tier)]; if(!g) return;
+      g.total++; if(m.has(w.word)) g.done++;
+    });
+    var order=['base','advance','core'];
+    box.innerHTML = order.map(function(key){
+      var g=groups[key], r=g.total?Math.round(g.done/g.total*100):0;
+      return '<div class="tier" data-tier="'+key+'">'+
+        '<div class="t-no">'+ (key==='base'?'I':key==='advance'?'II':'III') +'</div>'+
+        '<div class="t-cn">'+esc(g.cn)+'</div>'+
+        '<div class="t-la">'+esc(g.la)+'</div>'+
+        '<div class="t-note">'+esc(g.note)+'</div>'+
+        '<div class="t-count"><b>'+g.total.toLocaleString('en-US')+'</b><span>词</span></div>'+
+        '<div class="t-bar"><i style="width:'+r+'%"></i></div>'+
+        '<div class="t-meta"><span>已掌握 '+g.done.toLocaleString('en-US')+'</span><span>'+r+'%</span></div>'+
+        '<div class="t-go">进入此境 →</div>'+
+      '</div>';
     }).join('');
     Array.prototype.forEach.call(box.children, function(el){
-      el.addEventListener('click', function(){
-        var name=el.dataset.word, w=null;
-        for(var i=0;i<WORDS.length;i++) if(WORDS[i].word===name){ w=WORDS[i]; break; }
-        if(w) goWord(w);
-      });
+      el.addEventListener('click', function(){ enterTier(el.dataset.tier); });
     });
+  }
+  function enterTier(key){
+    var scope=$('wordScope');
+    if(scope){
+      var map={base:'tier-base', advance:'tier-advance', core:'tier-core'};
+      scope.value=map[key]||'all';
+      try{ STORE.setItem('hs-vocab-scope', scope.value); }catch(e){}
+    }
+    // 跳到该档第一个词；之后「下一个/上一个」会因 wPred 读 scope 而在本境之内翻词
+    var first=null;
+    for(var i=0;i<WORDS.length;i++){ if(tierGroup(WORDS[i].tier)===key){ first=WORDS[i]; break; } }
+    if(first) goWord(first); else go('study');
   }
 
   /* ---------------- 页边批注（真实短句） ---------------- */
@@ -5299,7 +5335,7 @@ Promise.resolve(
 
   function refreshAll() {
     var f = renderForge();
-    renderSites(f); renderRunes(); renderMarginalia(); renderColophon(); renderSpecimen(); syncHeader();
+    renderSites(f); renderTiers(); renderMarginalia(); renderColophon(); renderSpecimen(); syncHeader();
   }
 
   /* ---------------- 卷首场景：同一世界的时间轮换 ---------------- */

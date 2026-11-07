@@ -163,15 +163,16 @@ HOME = '''
   </div>
  </div>
 
+ <div class="tiers-block">
+  <div class="panel-title"><h2>词林三境</h2><span>Tres ordines · 三分总词库</span></div>
+  <div class="tier-row" id="tierRow"></div>
+  <div class="tier-tip" id="tierTip">全库 3,559 词分作三境：磐石打底，铸刃进阶，铭心收束核心；点任意一境，进入该层词条。</div>
+ </div>
+
  <div class="sites-block">
   <div class="panel-title"><h2>四十处遗迹</h2><span>40 word lists</span><span id="casePct">—</span></div>
   <div class="site-grid" id="siteGrid"></div>
   <div class="site-tip" id="siteTip">每一格是一处遗迹，对应一个 Word List；着墨越深，这一处的词记得越牢。</div>
- </div>
-
- <div class="runes-block">
-  <div class="panel-title"><h2>今日三枚符文</h2><span>Three sorts for today</span></div>
-  <div class="rune-row" id="runeRow"></div>
  </div>
 
  <div class="front-entries">
