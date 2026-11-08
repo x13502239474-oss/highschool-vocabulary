@@ -1264,6 +1264,24 @@ button.primary:active:not(:disabled){background:var(--crimson);color:#fff}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 
+/* ---- 高考真题直达入口：脱离「显示释义」，可单独展开 ---- */
+.exam-peek{margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}
+.exam-peek .exam-peek-btn{display:flex;align-items:center;gap:10px;width:100%;min-height:42px;
+  padding:8px 12px;border:1px solid var(--gold);border-radius:0;
+  background:linear-gradient(90deg,rgba(184,146,60,.10),transparent 72%);
+  color:var(--gold-d);font-size:14.5px;font-weight:600;letter-spacing:.02em;text-align:left;cursor:pointer}
+.exam-peek .exam-peek-btn:hover{background:linear-gradient(90deg,rgba(184,146,60,.18),transparent 78%)}
+.exam-peek .exam-peek-btn:focus-visible{outline:2px solid var(--gold-d);outline-offset:2px}
+.exam-peek-badge{font:10px var(--cinzel);letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid var(--gold);padding:3px 6px;white-space:nowrap}
+.exam-peek-label{flex:1}
+.exam-peek-chev{width:14px;height:14px;flex:0 0 14px;fill:none;stroke:currentColor;stroke-width:2;
+  transition:transform .2s}
+.exam-peek-btn[aria-expanded="true"] .exam-peek-chev{transform:rotate(180deg)}
+#examWrap.exam-detail{margin-top:14px}
+.exam-detail .detail-head b{font-size:11px;font-weight:600;letter-spacing:.1em}
+@media(max-width:600px){.exam-peek .exam-peek-btn{min-height:46px;font-size:14.5px}}
+
 </style>
 </head>
 <body><body>
@@ -1428,7 +1446,7 @@ button.primary:active:not(:disabled){background:var(--crimson);color:#fff}
      <span class="seg" id="wModeSeg"><button data-wmode="seq" class="on">按顺序</button><button data-wmode="random">随机</button></span>
      <span class="lbl">呈现</span>
      <span class="seg" id="wDictSeg"><button data-wdict="0" class="on">学习卡片</button><button data-wdict="1">默写</button></span>
-     <label>范围<select id="wordScope"><option value="all" selected>全部单词</option><option value="unmastered">只看未掌握</option><option value="review">只看待复习</option><option value="tier-base">磐石 · 基础词</option><option value="tier-advance">铸刃 · 进阶词</option><option value="tier-core">铭心 · 核心词</option></select></label>
+     <label>范围<select id="wordScope"><option value="all" selected>全部单词</option><option value="unmastered">只看未掌握</option><option value="review">只看待复习</option><option value="exam">只看含真题例句</option><option value="tier-base">磐石 · 基础词</option><option value="tier-advance">铸刃 · 进阶词</option><option value="tier-core">铭心 · 核心词</option></select></label>
      <button id="restart">从头开始</button>
      <label><input type="checkbox" id="okFx" checked> 答题音效</label>
      <label><input type="checkbox" id="cfx" checked> 彩带礼花</label>
@@ -1449,7 +1467,15 @@ button.primary:active:not(:disabled){background:var(--crimson);color:#fff}
   <div class="eyebrow" id="counter">准备开始</div>
   <div class="word-line"><div class="word" id="word">Welcome!</div><button class="speak" id="speakTop" title="朗读单词（快捷键 S）" aria-label="朗读"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8.5a4 4 0 0 1 0 7"/><path d="M19.5 6a7.5 7.5 0 0 1 0 12"/></svg></button></div>
   <div class="phonetic" id="phonetic">点击“显示释义”开始学习</div>
-  <div id="answer" class="hidden"><div class="definition" id="definition"></div><div class="detail" id="memoryWrap"><b>记忆提示</b><span id="memory"></span></div><div class="detail" id="exampleWrap"><div class="detail-head"><b>例句</b><button class="speak mini" id="exSpeak" title="朗读例句（只读英文部分）" aria-label="朗读例句"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8.5a4 4 0 0 1 0 7"/><path d="M19.5 6a7.5 7.5 0 0 1 0 12"/></svg></button></div><span id="example"></span></div><div class="detail exam-detail" id="examWrap"><div class="detail-head"><b>真题例句</b><button class="speak mini" id="examSpeak" title="朗读真题例句（只读英文部分）" aria-label="朗读真题例句"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8.5a4 4 0 0 1 0 7"/><path d="M19.5 6a7.5 7.5 0 0 1 0 12"/></svg></button></div><span id="exam"></span></div></div>
+  <div id="answer" class="hidden"><div class="definition" id="definition"></div><div class="detail" id="memoryWrap"><b>记忆提示</b><span id="memory"></span></div><div class="detail" id="exampleWrap"><div class="detail-head"><b>例句</b><button class="speak mini" id="exSpeak" title="朗读例句（只读英文部分）" aria-label="朗读例句"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8.5a4 4 0 0 1 0 7"/><path d="M19.5 6a7.5 7.5 0 0 1 0 12"/></svg></button></div><span id="example"></span></div></div>
+  <!-- 高考真题例句：常驻入口，独立于「显示释义」，点开只展开真题不泄题 -->
+  <div class="exam-peek hidden" id="examPeek">
+   <button class="exam-peek-btn" id="examPeekBtn" type="button" aria-expanded="false" aria-controls="examWrap">
+    <span class="exam-peek-badge">高考真题</span><span class="exam-peek-label" id="examPeekLabel">查看本词真题例句</span>
+    <svg class="exam-peek-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+   </button>
+   <div class="detail exam-detail hidden" id="examWrap"><div class="detail-head"><b>真题例句</b><button class="speak mini" id="examSpeak" title="朗读真题例句（只读英文部分）" aria-label="朗读真题例句"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8.5a4 4 0 0 1 0 7"/><path d="M19.5 6a7.5 7.5 0 0 1 0 12"/></svg></button></div><span id="exam"></span></div>
+  </div>
   <div id="wdictBox" class="hidden">
    <div class="in-wrap"><input id="wdictInput" class="d-input" type="text" lang="en" placeholder="看中文写英文，按 Enter 判分；判完再按 Enter 进入下一个" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><button type="button" class="in-clear" id="wdictClear" tabindex="-1" aria-label="清空输入内容" title="清空全部"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
    <div class="feedback" id="wdictResult"></div>
@@ -2601,7 +2627,7 @@ function updateStats(){
 function optionsForLists(){
   const rankList=l=>{ const n=parseInt(l.split(" ").pop()); if(!isNaN(n)) return n;
     return 1000+["认知词","简单单词","高考高频","高考真题"].indexOf(l); };
-  const extras=[["__hot__","高考高频（20 天版）"]];
+  const extras=[["__hot__","高考高频（20 天版）"],["__exam__","高考真题例句（1985 词）"]];
   for(let d=1;d<=20;d++) extras.push(["__day"+d+"__","20 天冲刺 · Day "+String(d).padStart(2,"0")]);
   for(let id of ["listStudy","listFilter"]) for(const [v,t] of extras){
     const o=document.createElement("option"); o.value=v; o.textContent=t; $(id).appendChild(o);
@@ -2615,6 +2641,7 @@ function optionsForLists(){
 }
 function hsListPred(list){
   if(list==="__hot__") return w=>w.hot===1;
+  if(list==="__exam__") return w=>!!w.exam;
   if(list && list.indexOf("__day")===0){ const d=parseInt(list.slice(5),10); return w=>w.day===d; }
   return ()=>true;
 }
@@ -2622,7 +2649,7 @@ function filtered(search, list){
   search=(search||"").trim().toLowerCase();
   const hs=hsListPred(list);
   return words.filter(w=>hs(w)&&(!list||list.indexOf("__")===0||w.list===list)
-    &&(!search||[w.word,w.phonetic,w.definition,w.memory,w.example].join(" ").toLowerCase().includes(search)));
+    &&(!search||[w.word,w.phonetic,w.definition,w.memory,w.example,w.exam].join(" ").toLowerCase().includes(search)));
 }
 function filteredSent(search, list){
   search=(search||"").trim().toLowerCase();
@@ -2633,6 +2660,7 @@ function wPred(){
   const hs=hsListPred(($("listStudy")&&$("listStudy").value)||"");
   if(s==="unmastered") return w=>hs(w)&&!mastered.has(w.word);
   if(s==="review") return w=>hs(w)&&review.has(w.word);
+  if(s==="exam") return w=>hs(w)&&!!w.exam;
   return hs;
 }
 /* ==================== 跳到单词 / 最近学过 ==================== */
@@ -2712,15 +2740,16 @@ function showWord(i){
     $("answer").classList.remove("hidden");
     $("memoryWrap").classList.add("hidden");
     $("exampleWrap").classList.add("hidden");
-    $("examWrap").classList.add("hidden");
+    $("examPeek").classList.add("hidden");
   }else{
     $("word").textContent=w.word;
     $("word").classList.remove("mask");
     $("memoryWrap").classList.toggle("hidden",!w.memory);
     $("exampleWrap").classList.toggle("hidden",!w.example);
-    $("examWrap").classList.toggle("hidden",!w.exam);
     $("answer").classList.add("hidden");
+    $("examPeek").classList.toggle("hidden",!w.exam);
   }
+  syncExamPeek();
   applyWDictUI();
   resetWDict();
   STORE.setItem("hs-vocab-pos", String(index));
@@ -2743,7 +2772,30 @@ function stepWord(dir){
   }
   return index;
 }
-$("reveal").onclick=()=>{$("answer").classList.toggle("hidden");$("reveal").textContent=$("answer").classList.contains("hidden")?"显示释义":"收起释义"};
+/* 高考真题例句：常驻入口 + 状态同步。
+   点「查看真题」只展开真题，不展开释义；点「显示释义」则连同真题一起放出。
+   默写模式在 showWord 里隐藏入口，答完题由 wdictRevealAnswer 放出。 */
+let examPeekOpen=false;
+function syncExamPeek(){
+  const w=activeWord(), has=!!(w&&w.exam);
+  const wrap=$("examWrap"), btn=$("examPeekBtn"), lab=$("examPeekLabel");
+  if(wrap) wrap.classList.toggle("hidden",!has||!examPeekOpen);
+  if(btn) btn.setAttribute("aria-expanded",(has&&examPeekOpen)?"true":"false");
+  if(lab) lab.textContent=examPeekOpen?"收起真题例句":"查看本词真题例句";
+}
+function revealExamPeek(){
+  const w=activeWord(), has=!!(w&&w.exam);
+  examPeekOpen=true;
+  const pk=$("examPeek"); if(pk) pk.classList.toggle("hidden",!has);
+  syncExamPeek();
+}
+{ const b=$("examPeekBtn"); if(b) b.onclick=()=>{ examPeekOpen=!examPeekOpen; syncExamPeek(); }; }
+$("reveal").onclick=()=>{
+  $("answer").classList.toggle("hidden");
+  const open=!$("answer").classList.contains("hidden");
+  $("reveal").textContent=open?"收起释义":"显示释义";
+  if(open){ examPeekOpen=true; syncExamPeek(); }
+};
 $("exSpeak").onclick=()=>{
   const w=activeWord(); if(!w) return;
   const ex=enPart(w.example);
@@ -3612,7 +3664,7 @@ function wdictRevealAnswer(){
   $("word").classList.remove("mask");
   $("memoryWrap").classList.toggle("hidden",!w.memory);
   $("exampleWrap").classList.toggle("hidden",!w.example);
-  $("examWrap").classList.toggle("hidden",!w.exam);
+  revealExamPeek();
   const spk=$("speakTop");
   if(spk) spk.disabled=false;                 // 答完可以听发音
 }

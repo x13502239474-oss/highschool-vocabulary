@@ -120,6 +120,7 @@ s = rep(s, '<div class="stats">', head + '<div class="stats">', 'head note')
 # ---------- 4. 虚拟分组：高考高频 + 20 天冲刺 ----------
 NEW_FILTERED = '''function hsListPred(list){
   if(list==="__hot__") return w=>w.hot===1;
+  if(list==="__exam__") return w=>!!w.exam;
   if(list && list.indexOf("__day")===0){ const d=parseInt(list.slice(5),10); return w=>w.day===d; }
   return ()=>true;
 }
@@ -127,7 +128,7 @@ function filtered(search, list){
   search=(search||"").trim().toLowerCase();
   const hs=hsListPred(list);
   return words.filter(w=>hs(w)&&(!list||list.indexOf("__")===0||w.list===list)
-    &&(!search||[w.word,w.phonetic,w.definition,w.memory,w.example].join(" ").toLowerCase().includes(search)));
+    &&(!search||[w.word,w.phonetic,w.definition,w.memory,w.example,w.exam].join(" ").toLowerCase().includes(search)));
 }'''
 s = replace_func(s, 'filtered', NEW_FILTERED)
 
@@ -136,6 +137,7 @@ NEW_WPRED = '''function wPred(){
   const hs=hsListPred(($("listStudy")&&$("listStudy").value)||"");
   if(s==="unmastered") return w=>hs(w)&&!mastered.has(w.word);
   if(s==="review") return w=>hs(w)&&review.has(w.word);
+  if(s==="exam") return w=>hs(w)&&!!w.exam;
   return hs;
 }'''
 s = replace_func(s, 'wPred', NEW_WPRED)
@@ -143,7 +145,7 @@ s = replace_func(s, 'wPred', NEW_WPRED)
 NEW_OPTIONS = '''function optionsForLists(){
   const rankList=l=>{ const n=parseInt(l.split(" ").pop()); if(!isNaN(n)) return n;
     return 1000+["认知词","简单单词","高考高频","高考真题"].indexOf(l); };
-  const extras=[["__hot__","高考高频（20 天版）"]];
+  const extras=[["__hot__","高考高频（20 天版）"],["__exam__","高考真题例句（1985 词）"]];
   for(let d=1;d<=20;d++) extras.push(["__day"+d+"__","20 天冲刺 · Day "+String(d).padStart(2,"0")]);
   for(let id of ["listStudy","listFilter"]) for(const [v,t] of extras){
     const o=document.createElement("option"); o.value=v; o.textContent=t; $(id).appendChild(o);

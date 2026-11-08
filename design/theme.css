@@ -586,3 +586,21 @@ button.primary:active:not(:disabled){background:var(--crimson);color:#fff}
   .paper{background:#fff;border:0}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* ---- 高考真题直达入口：脱离「显示释义」，可单独展开 ---- */
+.exam-peek{margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}
+.exam-peek .exam-peek-btn{display:flex;align-items:center;gap:10px;width:100%;min-height:42px;
+  padding:8px 12px;border:1px solid var(--gold);border-radius:0;
+  background:linear-gradient(90deg,rgba(184,146,60,.10),transparent 72%);
+  color:var(--gold-d);font-size:14.5px;font-weight:600;letter-spacing:.02em;text-align:left;cursor:pointer}
+.exam-peek .exam-peek-btn:hover{background:linear-gradient(90deg,rgba(184,146,60,.18),transparent 78%)}
+.exam-peek .exam-peek-btn:focus-visible{outline:2px solid var(--gold-d);outline-offset:2px}
+.exam-peek-badge{font:10px var(--cinzel);letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid var(--gold);padding:3px 6px;white-space:nowrap}
+.exam-peek-label{flex:1}
+.exam-peek-chev{width:14px;height:14px;flex:0 0 14px;fill:none;stroke:currentColor;stroke-width:2;
+  transition:transform .2s}
+.exam-peek-btn[aria-expanded="true"] .exam-peek-chev{transform:rotate(180deg)}
+#examWrap.exam-detail{margin-top:14px}
+.exam-detail .detail-head b{font-size:11px;font-weight:600;letter-spacing:.1em}
+@media(max-width:600px){.exam-peek .exam-peek-btn{min-height:46px;font-size:14.5px}}
